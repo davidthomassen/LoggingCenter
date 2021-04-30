@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="javax.servlet-api-3.0.1-javadoc">
+    <CLASSES />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../Libs/javax.servlet-api-3.0.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
