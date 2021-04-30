@@ -23,7 +23,6 @@ public class ResourceClient {
     public boolean checkConnection(){
         try{
             this.client.checkConnection(this.handle);
-            System.out.println("Resource Client connection successful");
             return true;
         } catch (IOException e) {
             e.printStackTrace();

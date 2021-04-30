@@ -23,7 +23,6 @@ public class EngineClient {
     public boolean checkConnection() {
         try {
             this.client.checkConnection(this.handle);
-            System.out.println("Engine Client connection successful");
             return true;
         } catch (IOException e) {
             e.printStackTrace();
