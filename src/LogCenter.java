@@ -17,7 +17,10 @@ public class LogCenter {
     static String port = "8080";
     static String contin = "y";
     static int log;
-    static int caseid;
+    static String caseid;
+    static String identifier;
+    static String version;
+    static String uri;
 
     public static void main(String[] args) throws Exception {
 
@@ -53,22 +56,85 @@ public class LogCenter {
             switch(log){
                 //Logs without input
                 case 1:
-                    fileWriter(getPrettyString(engClient.allSpecification()), "All_Specifications", "xml");
+                    fileWriter(getPrettyString(engClient.allSpecification()), "All_Specifications");
+                    System.out.println("All_Specifications.xml printed");
                     break;
                 case 2:
-                    fileWriter(getPrettyString(resClient.getAllResourceEvents()), "All_Ressource_Events", "xml");
+                    fileWriter(getPrettyString(resClient.getAllResourceEvents()), "All_Resource_Events");
+                    System.out.println("All_Resource_Events.xml printed");
                     break;
+
                 //Logs with CaseID input
                 case 3:
+                    System.out.println("Input Case ID");
+                    caseid = sc.next();
+                    fileWriter(getPrettyString(engClient.getCaseEvents(caseid)), "Case_Events_Engine");
+                    System.out.println("Case_Events_Engine.xml printed");
+                    break;
                 case 4:
+                    System.out.println("Input Case ID");
+                    caseid = sc.next();
+                    fileWriter(getPrettyString(resClient.getCaseEvents(caseid)), "Case_Events_ResourceService");
+                    System.out.println("Case_Events_ResourceService.xml printed");
+                    break;
                 case 5:
+                    System.out.println("Input Case ID");
+                    caseid = sc.next();
+                    fileWriter(getPrettyString(engClient.getCompleteCaseLog(caseid)), "Complete_Case_Log");
+                    System.out.println("Complete_Case_Log.xml printed");
+                    break;
 
                 //Logs with specification input
                 case 6:
+                    System.out.println("Input Identifier");
+                    identifier = sc.next();
+                    System.out.println("Input Version");
+                    version = sc.next();
+                    System.out.println("Input URI");
+                    uri = sc.next();
+                    fileWriter(resClient.getMergedXESLog(identifier, version, uri), "Merged_XES_Log");
+                    System.out.println("Merged_XES_Log.xml printed");
+                    break;
                 case 7:
+                    System.out.println("Input Identifier");
+                    identifier = sc.next();
+                    System.out.println("Input Version");
+                    version = sc.next();
+                    System.out.println("Input URI");
+                    uri = sc.next();
+                    fileWriter(getPrettyString(resClient.getSpecificationEvents(identifier, version, uri)), "Specification_Events");
+                    System.out.println("Specification_Events.xml printed");
+                    break;
                 case 8:
+                    System.out.println("Input Identifier");
+                    identifier = sc.next();
+                    System.out.println("Input Version");
+                    version = sc.next();
+                    System.out.println("Input URI");
+                    uri = sc.next();
+                    fileWriter(engClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_Engine");
+                    System.out.println("Specification_XES_Log_Engine.xml printed");
+                    break;
                 case 9:
+                    System.out.println("Input Identifier");
+                    identifier = sc.next();
+                    System.out.println("Input Version");
+                    version = sc.next();
+                    System.out.println("Input URI");
+                    uri = sc.next();
+                    fileWriter(resClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_ResourceService");
+                    System.out.println("Specification_XES_Log_ResourceService.xml printed");
+                    break;
                 case 10:
+                    System.out.println("Input Identifier");
+                    identifier = sc.next();
+                    System.out.println("Input Version");
+                    version = sc.next();
+                    System.out.println("Input URI");
+                    uri = sc.next();
+                    fileWriter(getPrettyString(engClient.getCompleteCaseLogsForSpecification(identifier, version, uri)), "Complete_Case_Log_For_Specification");
+                    System.out.println("Complete_Case_Log_For_Specification.xml printed");
+                    break;
             }
 
 
@@ -108,8 +174,8 @@ public class LogCenter {
 
 
     //Creates a Document in set Directory
-    private static void fileWriter(String input, String filename, String extention) throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter(savedirectory + filename + "." + extention, "UTF-8");
+    private static void fileWriter(String input, String filename) throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter writer = new PrintWriter(savedirectory + filename + ".xml", "UTF-8");
         writer.print(input);
         writer.close();
     }
