@@ -14,7 +14,7 @@ public class LogCenter {
     static String username;
     static String pw;
     static String ip = "localhost";
-    static String port = "8080";
+    static String port;
     static String contin = "y";
     static int log;
     static String caseid;
@@ -27,13 +27,19 @@ public class LogCenter {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Enter Username");
-        username = sc.next();
+        username = sc.nextLine();
         System.out.println("Enter Password");
-        pw = sc.next();
-        System.out.println("Enter IP Adress (intial value 'localhost')");
-        ip = sc.next();
+        pw = sc.nextLine();
+        System.out.println("Enter IP Address (initial value 'localhost')");
+        ip = sc.nextLine();
+        if(ip.isEmpty()){
+            ip = "localhost";
+        }
         System.out.println("Enter Port (initial value '8080')");
-        port = sc.next();
+        port = sc.nextLine();
+        if(port.isEmpty()){
+            port = "8080";
+        }
 
         //creates urls
         String url = "http://" + ip + ":" + port + "/yawl/logGateway";
@@ -47,10 +53,12 @@ public class LogCenter {
             System.out.println("Connection successful!");
         }else{
             System.out.println("Connection failed!");
+            System.exit(-1);
         }
 
         while(contin.equals("y")){
             System.out.println("Which Log Type do you want to extract?");
+            System.out.println("1 - All Specifications, 2 - All Resource Events, 3 - Case Events Engine, 4 - Case_Events_ResourceService, 5 - Complete_Case_Log, 6 - Merged_XES_Log, 7 - Specification_Events, 8 - Specification_XES_Log_Engine, 9 - Specification_XES_Log_ResourceService, 10 - Complete_Case_Log_For_Specification");
             log = sc.nextInt();
 
             switch(log){
