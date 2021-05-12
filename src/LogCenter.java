@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class LogCenter {
 
     //Class Variables
-    static String savedirectory = "C:\\";
+    static String savedirectory = "";
     static String username;
     static String pw;
     static String ip = "localhost";
@@ -59,6 +59,9 @@ public class LogCenter {
         //Set save directory
         System.out.println("Where do you want to save your files? (initially C:)");
         savedirectory = sc.nextLine();
+        if(savedirectory.isEmpty()){
+            savedirectory = "C:\\";
+        }
 
         while(contin.equals("y")){
             System.out.println("Which Log Type do you want to extract?");
@@ -70,11 +73,11 @@ public class LogCenter {
             switch(log){
                 //Logs without input
                 case 1:
-                    fileWriter(getPrettyString(engClient.allSpecification()), "All_Specifications");
+                    fileWriter(getPrettyString(engClient.allSpecification()), "All_Specifications.xml");
                     System.out.println("All_Specifications.xml printed");
                     break;
                 case 2:
-                    fileWriter(getPrettyString(resClient.getAllResourceEvents()), "All_Resource_Events");
+                    fileWriter(getPrettyString(resClient.getAllResourceEvents()), "All_Resource_Events.xml");
                     System.out.println("All_Resource_Events.xml printed");
                     break;
 
@@ -82,19 +85,19 @@ public class LogCenter {
                 case 3:
                     System.out.println("Input Case ID");
                     caseid = sc.next();
-                    fileWriter(getPrettyString(engClient.getCaseEvents(caseid)), "Case_Events_Engine");
+                    fileWriter(getPrettyString(engClient.getCaseEvents(caseid)), "Case_Events_Engine.xml");
                     System.out.println("Case_Events_Engine.xml printed");
                     break;
                 case 4:
                     System.out.println("Input Case ID");
                     caseid = sc.next();
-                    fileWriter(getPrettyString(resClient.getCaseEvents(caseid)), "Case_Events_ResourceService");
+                    fileWriter(getPrettyString(resClient.getCaseEvents(caseid)), "Case_Events_ResourceService.xml");
                     System.out.println("Case_Events_ResourceService.xml printed");
                     break;
                 case 5:
                     System.out.println("Input Case ID");
                     caseid = sc.next();
-                    fileWriter(getPrettyString(engClient.getCompleteCaseLog(caseid)), "Complete_Case_Log");
+                    fileWriter(getPrettyString(engClient.getCompleteCaseLog(caseid)), "Complete_Case_Log.xml");
                     System.out.println("Complete_Case_Log.xml printed");
                     break;
 
@@ -106,8 +109,8 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(resClient.getMergedXESLog(identifier, version, uri), "Merged_XES_Log");
-                    System.out.println("Merged_XES_Log.xml printed");
+                    fileWriter(resClient.getMergedXESLog(identifier, version, uri), "Merged_XES_Log.xes");
+                    System.out.println("Merged_XES_Log.xes printed");
                     break;
                 case 7:
                     System.out.println("Input Identifier");
@@ -116,7 +119,7 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(getPrettyString(resClient.getSpecificationEvents(identifier, version, uri)), "Specification_Events");
+                    fileWriter(getPrettyString(resClient.getSpecificationEvents(identifier, version, uri)), "Specification_Events.xml");
                     System.out.println("Specification_Events.xml printed");
                     break;
                 case 8:
@@ -126,8 +129,8 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(engClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_Engine");
-                    System.out.println("Specification_XES_Log_Engine.xml printed");
+                    fileWriter(engClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_Engine.xes");
+                    System.out.println("Specification_XES_Log_Engine.xes printed");
                     break;
                 case 9:
                     System.out.println("Input Identifier");
@@ -136,8 +139,8 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(resClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_ResourceService");
-                    System.out.println("Specification_XES_Log_ResourceService.xml printed");
+                    fileWriter(resClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_ResourceService.xes");
+                    System.out.println("Specification_XES_Log_ResourceService.xes printed");
                     break;
                 case 10:
                     System.out.println("Input Identifier");
@@ -146,7 +149,7 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(getPrettyString(engClient.getCompleteCaseLogsForSpecification(identifier, version, uri)), "Complete_Case_Log_For_Specification");
+                    fileWriter(getPrettyString(engClient.getCompleteCaseLogsForSpecification(identifier, version, uri)), "Complete_Case_Log_For_Specification.xml");
                     System.out.println("Complete_Case_Log_For_Specification.xml printed");
                     break;
             }
@@ -189,7 +192,7 @@ public class LogCenter {
 
     //Creates a Document in set Directory
     private static void fileWriter(String input, String filename) throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter(savedirectory + filename + ".xml", "UTF-8");
+        PrintWriter writer = new PrintWriter(savedirectory + filename + "", "UTF-8");
         writer.print(input);
         writer.close();
     }
