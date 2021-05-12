@@ -56,6 +56,10 @@ public class LogCenter {
             System.exit(-1);
         }
 
+        //Set save directory
+        System.out.println("Where do you want to save your files? (initially C:)");
+        savedirectory = sc.nextLine();
+
         while(contin.equals("y")){
             System.out.println("Which Log Type do you want to extract?");
             System.out.println("1: All Specifications      2: All Resource Events");
