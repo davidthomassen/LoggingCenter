@@ -21,9 +21,13 @@ public class ResourceClient {
 
     //checks connection
     public boolean checkConnection(){
-        try{
-            this.client.checkConnection(this.handle);
+        try {
+            if(this.client.checkConnection(this.handle).equals("true")){
             return true;
+            }
+            else{
+                return false;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;

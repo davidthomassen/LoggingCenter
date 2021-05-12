@@ -58,7 +58,9 @@ public class LogCenter {
 
         while(contin.equals("y")){
             System.out.println("Which Log Type do you want to extract?");
-            System.out.println("1 - All Specifications, 2 - All Resource Events, 3 - Case Events Engine, 4 - Case_Events_ResourceService, 5 - Complete_Case_Log, 6 - Merged_XES_Log, 7 - Specification_Events, 8 - Specification_XES_Log_Engine, 9 - Specification_XES_Log_ResourceService, 10 - Complete_Case_Log_For_Specification");
+            System.out.println("1: All Specifications      2: All Resource Events");
+            System.out.println("3: Case Events Engine      4: Case_Events_ResourceService     5: Complete_Case_Log                        6: Merged_XES_Log");
+            System.out.println("7: Specification_Events    8: Specification_XES_Log_Engine    9: Specification_XES_Log_ResourceService    10 : Complete_Case_Log_For_Specification");
             log = sc.nextInt();
 
             switch(log){

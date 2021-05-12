@@ -22,8 +22,11 @@ public class EngineClient {
     //Checks if connection to Engine was successful
     public boolean checkConnection() {
         try {
-            this.client.checkConnection(this.handle);
-            return true;
+            if(this.client.checkConnection(this.handle).equals("<success/>")) {
+                return true;
+            }else{
+                return false;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
