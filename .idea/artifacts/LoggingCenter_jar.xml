@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LoggingCenter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/LoggingCenter_jar</output-path>
+    <root id="archive" name="LoggingCenter.jar">
+      <element id="module-output" name="LoggingCenter" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../yawl/build/jar/yawl-lib-4.3.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Libs/commons-codec-1.15/commons-codec-1.15.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Libs/commons-codec-1.15/commons-codec-1.15-tests.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Libs/commons-codec-1.15/commons-codec-1.15-javadoc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Libs/commons-codec-1.15/commons-codec-1.15-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Libs/commons-codec-1.15/commons-codec-1.15-test-sources.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Libs/servlet-api.jar" path-in-jar="/" />
+      <element id="library" level="project" name="javax.servlet-api-3.0.1-javadoc" />
+    </root>
+  </artifact>
+</component>
