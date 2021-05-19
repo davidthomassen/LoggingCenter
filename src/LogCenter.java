@@ -1,10 +1,17 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class LogCenter {
@@ -77,7 +84,7 @@ public class LogCenter {
                     System.out.println("All_Specifications.xml printed");
                     break;
                 case 2:
-                    fileWriter(getPrettyString(resClient.getAllResourceEvents()), "All_Resource_Events.xml");
+                    fileWriter(replaceTimestamp(resClient.getAllResourceEvents()), "All_Resource_Events.xml");
                     System.out.println("All_Resource_Events.xml printed");
                     break;
 
@@ -85,19 +92,19 @@ public class LogCenter {
                 case 3:
                     System.out.println("Input Case ID");
                     caseid = sc.next();
-                    fileWriter(getPrettyString(engClient.getCaseEvents(caseid)), "Case_Events_Engine.xml");
+                    fileWriter(replaceTimestamp(engClient.getCaseEvents(caseid)), "Case_Events_Engine_" + caseid + ".xml");
                     System.out.println("Case_Events_Engine.xml printed");
                     break;
                 case 4:
                     System.out.println("Input Case ID");
                     caseid = sc.next();
-                    fileWriter(getPrettyString(resClient.getCaseEvents(caseid)), "Case_Events_ResourceService.xml");
+                    fileWriter(replaceTimestamp(resClient.getCaseEvents(caseid)), "Case_Events_ResourceService_" + caseid + ".xml");
                     System.out.println("Case_Events_ResourceService.xml printed");
                     break;
                 case 5:
                     System.out.println("Input Case ID");
                     caseid = sc.next();
-                    fileWriter(getPrettyString(engClient.getCompleteCaseLog(caseid)), "Complete_Case_Log.xml");
+                    fileWriter(replaceTimestamp(engClient.getCompleteCaseLog(caseid)), "Complete_Case_Log_" + caseid + ".xml");
                     System.out.println("Complete_Case_Log.xml printed");
                     break;
 
@@ -109,7 +116,7 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(resClient.getMergedXESLog(identifier, version, uri), "Merged_XES_Log.xes");
+                    fileWriter(resClient.getMergedXESLog(identifier, version, uri), "Merged_XES_Log_" + uri + ".xes");
                     System.out.println("Merged_XES_Log.xes printed");
                     break;
                 case 7:
@@ -119,7 +126,7 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(getPrettyString(resClient.getSpecificationEvents(identifier, version, uri)), "Specification_Events.xml");
+                    fileWriter(replaceTimestamp(resClient.getSpecificationEvents(identifier, version, uri)), "Specification_Events_" + uri + ".xml");
                     System.out.println("Specification_Events.xml printed");
                     break;
                 case 8:
@@ -129,7 +136,7 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(engClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_Engine.xes");
+                    fileWriter(engClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_Engine_" + uri + ".xes");
                     System.out.println("Specification_XES_Log_Engine.xes printed");
                     break;
                 case 9:
@@ -139,7 +146,7 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(resClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_ResourceService.xes");
+                    fileWriter(resClient.getSpecificationXESLog(identifier, version, uri), "Specification_XES_Log_ResourceService_" + uri + ".xes");
                     System.out.println("Specification_XES_Log_ResourceService.xes printed");
                     break;
                 case 10:
@@ -149,7 +156,7 @@ public class LogCenter {
                     version = sc.next();
                     System.out.println("Input URI");
                     uri = sc.next();
-                    fileWriter(getPrettyString(engClient.getCompleteCaseLogsForSpecification(identifier, version, uri)), "Complete_Case_Log_For_Specification.xml");
+                    fileWriter(replaceTimestamp(engClient.getCompleteCaseLogsForSpecification(identifier, version, uri)), "Complete_Case_Log_For_Specification_" + uri + ".xml");
                     System.out.println("Complete_Case_Log_For_Specification.xml printed");
                     break;
             }
@@ -215,4 +222,49 @@ public class LogCenter {
         return xmlOutput.getWriter().toString();
     }
 
+
+    public static String replaceTimestamp(String input) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+        try {
+            PrintWriter writer = new PrintWriter("tmp.xml", "UTF-8");
+            writer.print(input);
+            writer.close();
+            File fXmlFile = new File("tmp.xml");
+            DocumentBuilderFactory dbFactory1 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder1 = dbFactory1.newDocumentBuilder();
+            if (!fXmlFile.exists()) {
+                System.out.println("Error: File not found!");
+            }
+
+            Document doc = dBuilder1.parse(fXmlFile);
+            doc.getDocumentElement().normalize();
+            NodeList nodelist = doc.getElementsByTagName("timestamp");
+
+            for(int i = 0; i < nodelist.getLength(); ++i) {
+                doc.getElementsByTagName("timestamp").item(i).setTextContent(dateFormat.format(Long.parseLong(nodelist.item(i).getTextContent())));
+            }
+
+            try {
+                StringWriter sw = new StringWriter();
+                TransformerFactory tf = TransformerFactory.newInstance();
+                Transformer transformer = tf.newTransformer();
+                transformer.setOutputProperty("omit-xml-declaration", "no");
+                transformer.setOutputProperty("method", "xml");
+                transformer.setOutputProperty("indent", "yes");
+                transformer.setOutputProperty("encoding", "UTF-8");
+                transformer.transform(new DOMSource(doc), new StreamResult(sw));
+                if (fXmlFile.exists()) {
+                    fXmlFile.delete();
+                }
+
+                return sw.toString();
+            } catch (Exception var11) {
+                throw new RuntimeException("Error converting to String", var11);
+            }
+        } catch (Exception var12) {
+            var12.printStackTrace();
+            return null;
+        }
+    }
 }
