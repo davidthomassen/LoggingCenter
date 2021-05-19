@@ -259,11 +259,11 @@ public class LogCenter {
                 }
 
                 return sw.toString();
-            } catch (Exception var11) {
-                throw new RuntimeException("Error converting to String", var11);
+            } catch (Exception e) {
+                throw new RuntimeException("Error converting to String", e);
             }
-        } catch (Exception var12) {
-            var12.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
